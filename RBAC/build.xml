@@ -1,0 +1,64 @@
+<project name="RBAC-RBE" default="main" basedir=".">
+    <property name="projectName" value="RBAC-RBE" />
+    <property name="src.dir" location="src" />
+    <property name="build.dir" location="bin" />
+    <property name="dist.dir" location="dist" />
+    <property name="output.dir" location="output" />
+
+    <target name="init" >
+	<mkdir dir="${build.dir}" />
+        <delete dir="${output.dir}" />
+    </target>
+    
+
+   
+	<target name="compile" depends="init" description="Source is getting complied">
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" />
+	</target>
+
+
+    <target name="compileRBACClasses" depends="init">
+        <mkdir dir="build/classes" />
+        <javac srcdir="src" destdir="build/classes">
+            <classpath>
+                    
+				<pathelement path="lib/bcprov-jdk16-1.46.jar" />
+				<pathelement path="lib/jna-3.2.5.jar" />
+				<pathelement path="lib/jpbc-api-2.0.0.jar" />
+				<pathelement path="lib/jpbc-benchmark-2.0.0.jar" />
+				<pathelement path="lib/jpbc-crypto-2.0.0.jar" />
+				<pathelement path="lib/jpbc-mm-2.0.0.jar" />
+				<pathelement path="lib/jpbc-pbc-2.0.0.jar" />
+            	<pathelement path="lib/jpbc-plaf-2.0.0.jar" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="run_SA" depends="compileRBACClasses">
+        <mkdir dir="build/jar" />
+        <jar destfile="build/jar/RBAC.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="" />
+            </manifest>
+            <fileset dir="bin/" />
+            <zipfileset excludes="META-INF/*.SF" src="./lib/bcprov-jdk16-1.46.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="./lib/jna-3.2.5.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="./lib/jpbc-api-2.0.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="./lib/jpbc-benchmark-2.0.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="./lib/jpbc-crypto-2.0.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="./lib/jpbc-mm-2.0.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="./lib/jpbc-pbc-2.0.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="./lib/jpbc-plaf-2.0.0.jar" />
+	
+		
+        </jar>
+    </target>
+
+	   
+<target name="main" depends="compile, compileRBACClasses, run_SA " >
+	<!--<java jar="build/jar/RBAC.jar" fork="true"/>-->
+	
+</target>
+
+
+</project>
